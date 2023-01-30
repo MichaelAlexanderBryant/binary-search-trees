@@ -131,6 +131,20 @@ class Tree {
             };
         };
     };
+    find(value) {
+        let ptr = this.root;
+        while (ptr != null) {
+            if (ptr.value == value) {
+                return ptr
+            };
+            if (ptr.value > value) {
+                ptr = ptr.left;
+            } else {
+                ptr = ptr.right;
+            };
+        };
+        return null;
+    };
 };
 
 const prettyPrint = (node, prefix = '', isLeft = true) => {
@@ -143,8 +157,8 @@ const prettyPrint = (node, prefix = '', isLeft = true) => {
     }
   }
 
-testArr = [1, 7, 4, 23, 8, 9, 3, 5, 67, 6345, 324];
+testArr = [1, 7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 67, 6345, 324];
 let newTree = new Tree();
 newTree.buildTree(testArr);
-newTree.insert(10);
-prettyPrint(newTree.root)
+console.log(newTree.find(10))
+prettyPrint(newTree.root);

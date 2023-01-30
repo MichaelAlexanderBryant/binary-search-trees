@@ -1,4 +1,4 @@
-import {Node, Tree} from "./bst.js";
+import {Tree} from "./bst.js";
 
 const prettyPrint = (node, prefix = '', isLeft = true) => {
     if (node.right !== null) {

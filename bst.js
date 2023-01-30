@@ -58,6 +58,79 @@ class Tree {
             previous.right = newNode;
         }      
     };
+
+    delete(value) {
+        let previous = null;
+        let ptr = this.root;
+        while ((ptr != null) && (ptr.value != value)) {
+            previous = ptr;
+            if (ptr.value > value) {
+                ptr = ptr.left;
+            } else {
+                ptr = ptr.right;
+            };
+        };
+        if (ptr != null) {
+            if ((ptr.value == value) && (ptr.left == null) && (ptr.right == null)) {
+                // case 1: node to delete is a leaf node.
+                if (previous.left == ptr) {
+                    previous.left = null;
+                } else {
+                    previous.right = null;
+                };
+            } else if ((ptr.value == value) && !!((ptr.left == null) ^ (ptr.right == null))) {
+                // case 2: node to delete has one child
+                if (ptr.left == null) {
+                    if (previous.left == ptr) {
+                        previous.left = ptr.right;
+                    } else {
+                        previous.right = ptr.right;
+                    };
+                } else {
+                    if (previous.left == ptr) {
+                        previous.left = ptr.left;
+                    } else {
+                        previous.right = ptr.left;
+                    };
+                };
+            } else if ((ptr.value == value) && (ptr.left != null) && (ptr.right != null)) {
+                // case 3: node to delete has two children
+                let previousFindReplacement = ptr;
+                let findReplacement = ptr.right;
+                while (findReplacement.left != null) {
+                    previousFindReplacement = findReplacement;
+                    findReplacement = findReplacement.left;
+                };
+                if (previousFindReplacement == ptr) {
+                    findReplacement.left = ptr.left;
+                    this.root = findReplacement;
+                } else {
+                    findReplacement.left = ptr.left
+                    if (findReplacement.right == null) {
+                        previousFindReplacement.left = null;
+                        findReplacement.right = ptr.right
+                        if (previous.left == ptr) {
+                            previous.left = findReplacement;
+                        } else {
+                            previous.right = findReplacement;
+                        }
+                    } else {
+                        previousFindReplacement.left = findReplacement.right;
+                        findReplacement.right = ptr.right
+                        findReplacement.left = ptr.right
+                        this.root = findReplacement;
+                        if (previous != null) {
+                            if (previous.left == ptr) {
+                                previous.left = findReplacement;
+                            } else {
+                                previous.right = findReplacement;
+                            }
+                        };
+                    }
+                };
+            };
+        };
+    };
 };
 
 const prettyPrint = (node, prefix = '', isLeft = true) => {
@@ -74,5 +147,4 @@ testArr = [1, 7, 4, 23, 8, 9, 3, 5, 67, 6345, 324];
 let newTree = new Tree();
 newTree.buildTree(testArr);
 newTree.insert(10);
-
 prettyPrint(newTree.root)

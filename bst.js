@@ -159,9 +159,42 @@ class Tree {
             fn(nextNode);
         };
     };
-    inorder(fn) {
-        
-    }
+    inorder(currentNode, fn) {
+        fn(currentNode);
+        if (currentNode.left != null) {
+            this.inorder(currentNode.left, fn);
+        };
+        if (currentNode.right != null) {
+            this.inorder(currentNode.right, fn);
+        };
+    };
+    preorder(currentNode, fn) {
+        fn(currentNode);
+        if (currentNode.left != null) {
+            this.inorder(currentNode.left, fn);
+        };
+        if (currentNode.right != null) {
+            this.inorder(currentNode.right, fn);
+        };
+    };
+    inorder(currentNode, fn) {
+        if (currentNode.left != null) {
+            this.inorder(currentNode.left, fn);
+        };
+        fn(currentNode);
+        if (currentNode.right != null) {
+            this.inorder(currentNode.right, fn);
+        };
+    };
+    postorder(currentNode, fn) {
+        if (currentNode.left != null) {
+            this.inorder(currentNode.left, fn);
+        };
+        if (currentNode.right != null) {
+            this.inorder(currentNode.right, fn);
+        };
+        fn(currentNode);
+    };
 };
 
 const prettyPrint = (node, prefix = '', isLeft = true) => {
@@ -184,3 +217,6 @@ newTree.buildTree(testArr);
 console.log(newTree.find(10))
 prettyPrint(newTree.root);
 // newTree.levelOrder(printNodeValue);
+// newTree.preorder(newTree.root, printNodeValue);
+// newTree.inorder(newTree.root, printNodeValue);
+// newTree.postorder(newTree.root, printNodeValue);

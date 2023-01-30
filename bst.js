@@ -244,4 +244,4 @@ class Tree {
     };
 };
 
-export {Node, Tree};
+export {Tree};

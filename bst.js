@@ -195,28 +195,53 @@ class Tree {
         };
         fn(currentNode);
     };
+    height(currentNode=this.root) {
+        // Defined as maximum number of edges
+        if ((currentNode.left == null) && (currentNode.right == null)) {
+            return 0;
+        } else if ((currentNode.left == null) && (currentNode.right != null)) {
+            return 1 + this.height(currentNode.right);
+        } else if ((currentNode.left != null) && (currentNode.right == null)) {
+            return 1 + this.height(currentNode.left);
+        } else {
+            return 1 + Math.max(this.height(currentNode.left), this.height(currentNode.right));
+        };
+    };
+    depth(currentNode, target) {
+        if (this.find(target) != null) {
+            if (currentNode.value == target) {
+                return 0;
+            } else if ((currentNode.value > target) && (currentNode.left != null)) {
+                return 1 + this.depth(currentNode.left, target);
+            } else if ((currentNode.value < target) && (currentNode.right != null)) {
+                return 1 + this.depth(currentNode.right, target);
+            };
+        } else { return null }
+    };
+    isBalanced() {
+        if (Math.abs(this.height(this.root.left) - this.height(this.root.right)) <= 1) {
+            return true;
+        } else {
+            return false;
+        };
+    };
+    rebalance() {
+        let queue = [];
+        let allValues = [];
+        queue.push(this.root);
+        while (queue.length > 0) {
+            let nextNode = queue.shift()
+            if (nextNode.left != null) {
+                queue.push(nextNode.left)
+            };
+            if  (nextNode.right != null) {
+                queue.push(nextNode.right)
+            };
+            allValues.push(nextNode.value);
+        };
+        this.root = null;
+        this.buildTree(allValues);
+    };
 };
 
-const prettyPrint = (node, prefix = '', isLeft = true) => {
-    if (node.right !== null) {
-      prettyPrint(node.right, `${prefix}${isLeft ? '│   ' : '    '}`, false);
-    }
-    console.log(`${prefix}${isLeft ? '└── ' : '┌── '}${node.value}`);
-    if (node.left !== null) {
-      prettyPrint(node.left, `${prefix}${isLeft ? '    ' : '│   '}`, true);
-    }
-  }
-
-function printNodeValue(aNode) {
-    console.log(aNode.value);
-};
-
-testArr = [1, 7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 67, 6345, 324];
-let newTree = new Tree();
-newTree.buildTree(testArr);
-console.log(newTree.find(10))
-prettyPrint(newTree.root);
-// newTree.levelOrder(printNodeValue);
-// newTree.preorder(newTree.root, printNodeValue);
-// newTree.inorder(newTree.root, printNodeValue);
-// newTree.postorder(newTree.root, printNodeValue);
+export {Node, Tree};

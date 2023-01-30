@@ -145,6 +145,23 @@ class Tree {
         };
         return null;
     };
+    levelOrder(fn) {
+        let queue = [];
+        queue.push(this.root);
+        while (queue.length > 0) {
+            let nextNode = queue.shift()
+            if (nextNode.left != null) {
+                queue.push(nextNode.left)
+            };
+            if  (nextNode.right != null) {
+                queue.push(nextNode.right)
+            };
+            fn(nextNode);
+        };
+    };
+    inorder(fn) {
+        
+    }
 };
 
 const prettyPrint = (node, prefix = '', isLeft = true) => {
@@ -157,8 +174,13 @@ const prettyPrint = (node, prefix = '', isLeft = true) => {
     }
   }
 
+function printNodeValue(aNode) {
+    console.log(aNode.value);
+};
+
 testArr = [1, 7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 67, 6345, 324];
 let newTree = new Tree();
 newTree.buildTree(testArr);
 console.log(newTree.find(10))
 prettyPrint(newTree.root);
+// newTree.levelOrder(printNodeValue);
